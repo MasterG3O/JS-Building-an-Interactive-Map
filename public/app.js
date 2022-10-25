@@ -3,11 +3,13 @@ document.getElementById('submit-butt').addEventListener('click', (event) => {
     let selectedBusiness = document.getElementById('user-selection').value
     getFoursquareBusinesses(selectedBusiness)
     
+    
 })
 
 async function getCoords(){
     let pos = await new Promise((resolve,reject) =>{;
     navigator.geolocation.getCurrentPosition(resolve,reject);
+    console.log(getCoords)
 })
 return[pos.coords.latitude, pos.coords.longitude]
 }
@@ -31,9 +33,10 @@ const businessMap = {
         const marker = L.marker(this.userCoords)
         // Apply marker + ppup over use
         marker.addTo(this.map).bindPopup('<b>Current Location</b>').openPopup()
+
     },
 }
-
+// Use Foursquare API to add inputted locations to map
 async function getFoursquareBusinesses( business) {
     const options = {
         method: 'GET',
@@ -43,6 +46,7 @@ async function getFoursquareBusinesses( business) {
     let response = await fetch(`https://api.foursquare.com/v3/places/search?query=${business}&ll=${businessMap.userCoords[0]}%2C${businessMap.userCoords[1]}&limit=5`, options)
     let jsonResponse = await response.json()
     let businessesResults = jsonResponse.results
+    console.log(jsonResponse)
     businessesResults.forEach((business) => {
         const marker = L.marker([business.geocodes.main.latitude, business.geocodes.main.longitude])
      
@@ -54,4 +58,9 @@ window.onload = async () => {
     const userCoords = await getCoords()
     businessMap.userCoords = userCoords
     businessMap.construct()
+    console.log("READY!! NOW PICK A SERVICE YOU'D LIKE TO SEE")
+   
 }
+
+let results = 
+console.log(results)
